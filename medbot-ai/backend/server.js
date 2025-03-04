@@ -19,7 +19,7 @@ app.use(express.json());
 
 app.use("/auth", authRoutes);
 app.use("/medical", medicalRoutes); 
-app.use("/api", chatRoutes); 
+app.use("/api/chat", chatRoutes); 
 
 const PORT = process.env.PORT || 5000;
 

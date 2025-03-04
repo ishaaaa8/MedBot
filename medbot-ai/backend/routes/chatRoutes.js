@@ -2,20 +2,25 @@ const express = require("express");
 const router = express.Router();
 const { getMedicalResponse } = require("../controllers/ragChatbot"); // Import function
 
-router.post("/chat", async (req, res) => {
+// ✅ Chatbot query route
+router.post("/", async (req, res) => {
     try {
-        const { user_info, input } = req.body; // Get user info & query
+        const { userEmail, query } = req.body; // Get user email & query
 
-        if (!user_info || !input) {
-            return res.status(400).json({ error: "User info and input query are required." });
+        if (!userEmail || !query) {
+            return res.status(400).json({ error: "User email and query are required." });
         }
 
-        const response = await getMedicalResponse(user_info, input); // Pass both user info & input
+        console.log(`📩 New Chat Query from ${userEmail}: ${query}`);
 
-        res.json({ answer: response }); // Send chatbot response
+        const response = await getMedicalResponse(userEmail, query); // Get AI response
+
+        console.log(`✅ AI Response for ${userEmail}:`, response);
+        res.json({ answer: response });
+
     } catch (error) {
-        console.error("Error:", error);
-        res.status(500).json({ error: "Internal Server Error" });
+        console.error("🔥 ERROR: Chatbot processing failed!", error);
+        res.status(500).json({ error: "Internal Server Error. Please try again later." });
     }
 });
 

@@ -3,38 +3,84 @@ const Medical = require("../models/MedicalForm");
 
 const router = express.Router();
 
-// Save Medical Details
+const medicalController = require("../controllers/medicalController");
+const multer = require("multer");
+
+// Configure Multer for PDF upload
+const upload = multer({ dest: "uploads/" });
+
+
+
+// Upload prescription route
+// ✅ Upload Prescription Route
+router.post("/upload-prescription", upload.single("prescription"), async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ error: "No file uploaded." });
+        }
+
+        console.log(`📄 Received Prescription: ${req.file.originalname}`);
+        const result = await medicalController.uploadPrescription(req,res);
+        console.log(result);
+
+        // res.status(200).json({ message: "Prescription uploaded successfully!", data: result });
+
+    } catch (error) {
+        console.error("🔥 ERROR: Prescription upload failed!", error);
+        // res.status(500).json({ error: "Internal Server Error. Please try again later." });
+    }
+});
+
+
+
+
+
+// ✅ Save Medical Details Route
 router.post("/save", async (req, res) => {
-  const { email, age, gender, medical_conditions, allergies, medications } = req.body;
+    try {
+        const { email, age, gender, medical_conditions, allergies, medications } = req.body;
 
-  try {
-    let medicalRecord = await Medical.findOne({ email });
+        if (!email || !age || !gender) {
+            return res.status(400).json({ error: "Email, age, and gender are required." });
+        }
 
-    if (medicalRecord) {
-      return res.status(400).json({ message: "Medical details already exist!" });
+        let medicalRecord = await Medical.findOne({ email });
+
+        if (medicalRecord) {
+            return res.status(400).json({ error: "Medical details already exist!" });
+        }
+
+        medicalRecord = new Medical({ email, age, gender, medical_conditions, allergies, medications });
+        await medicalRecord.save();
+
+        console.log(`✅ Medical details saved for ${email}`);
+        res.status(201).json({ message: "Medical details saved successfully!" });
+
+    } catch (error) {
+        console.error("🔥 ERROR: Saving medical details failed!", error);
+        res.status(500).json({ error: "Internal Server Error. Please try again later." });
     }
-
-    medicalRecord = new Medical({ email, age, gender, medical_conditions, allergies, medications });
-    await medicalRecord.save();
-    res.status(201).json({ message: "Medical details saved successfully!" });
-  } catch (error) {
-    res.status(500).json({ message: "Server Error", error });
-  }
 });
 
-// Get User Medical Details
+
+
+
+// ✅ Get User Medical Details Route
 router.get("/:email", async (req, res) => {
-  const { email } = req.params;
+    try {
+        const { email } = req.params;
+        const medicalRecord = await Medical.findOne({ email });
 
-  try {
-    const medicalRecord = await Medical.findOne({ email });
-    if (!medicalRecord) {
-      return res.status(404).json({ message: "No medical details found!" });
+        if (!medicalRecord) {
+            return res.status(404).json({ error: "No medical details found!" });
+        }
+
+        console.log(`📄 Medical Record Fetched for ${email}`);
+        res.status(200).json(medicalRecord);
+
+    } catch (error) {
+        console.error("🔥 ERROR: Fetching medical details failed!", error);
+        res.status(500).json({ error: "Internal Server Error. Please try again later." });
     }
-    res.status(200).json(medicalRecord);
-  } catch (error) {
-    res.status(500).json({ message: "Server Error", error });
-  }
 });
-
 module.exports = router;
