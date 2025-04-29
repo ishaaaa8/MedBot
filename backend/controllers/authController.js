@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+const Admin = require("../models/Admin");
 
 // Sign up function
 const registerUser = async (req, res) => {
@@ -46,5 +47,21 @@ const loginUser = async (req, res) => {
   }
 };
 
+const loginAdmin = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // Check if the admin exists
+    const admin = await Admin.findOne({ email });
+    if (!admin) return res.status(400).json({ message: "Admin not found" });
+
+    console.log("admin log")
+
+    res.status(200).json({ message: "Admin login successful" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 // Export functions
-module.exports = { registerUser, loginUser };
+module.exports = { registerUser, loginUser , loginAdmin};

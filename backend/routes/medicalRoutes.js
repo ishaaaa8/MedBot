@@ -24,7 +24,7 @@ router.post("/upload-prescription", upload.single("prescription"), async (req, r
         // console.log(`Received Prescription: ${req.file.originalname}`);
         const result = await medicalController.uploadPrescription(req,res);
         console.log("you re in shan");
-        console.log(result);
+        console.log(result.data);
 
 
         // res.status(200).json({ message: "Prescription uploaded successfully!", data: result });

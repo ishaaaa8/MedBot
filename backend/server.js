@@ -20,6 +20,7 @@ app.use(express.json());
 app.use("/auth", authRoutes);
 app.use("/medical", medicalRoutes); 
 app.use("/api/chat", chatRoutes); 
+app.use("/api/admin", require("./routes/adminRoutes")); // Admin routes
 
 const PORT = process.env.PORT || 5000;
 

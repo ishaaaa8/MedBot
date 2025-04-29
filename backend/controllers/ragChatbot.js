@@ -24,7 +24,7 @@ const path = require("path");
 // 🔹 Initialize in-memory vector store (replace with Pinecone/Weaviate for production)
 const embeddings = new OllamaEmbeddings(
     {
-        model: "llama3.2:latest",
+        model: "llama3",
         temperature: 1,
         baseUrl: "http://localhost:11434",
     }
@@ -127,7 +127,7 @@ async function storeUserMedicalData(userEmail) {
   ? `**Age:** ${userMedicalForm.age}\n**Allergies:** ${userMedicalForm.allergies?.join(", ") || "N/A"}\n**Conditions:** ${userMedicalForm.medical_conditions?.join(", ") || "N/A"}\n**Medications:** ${userMedicalForm.medications?.join(", ") || "N/A"}`
   : "No medical form details available.";
 
-// console.log("Medical Form Text:", medicalFormText);
+console.log("Medical Form Text:", medicalFormText);
 
 
         // 🔹 Combine both into structured history
@@ -280,7 +280,7 @@ async function getMedicalResponse(userEmail, userInput) {
         messages: [
             { role: "user", content: promptText },
         ],
-        model: "llama-3.3-70b-versatile",
+        model: "deepseek-r1-distill-llama-70b",
         temperature: 0.7,
         max_tokens: 500,
         top_p: 1,

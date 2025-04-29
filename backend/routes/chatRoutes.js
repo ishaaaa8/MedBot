@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { createSummarizeChain } = require("../controllers/summarizeChain");
 const { getMedicalResponse } = require("../controllers/ragChatbot"); // Import function
+const User = require("../models/User");
 
 // Store conversations in memory (consider using Redis or DB for production)
 const sessionConversations = new Map();
@@ -45,6 +46,12 @@ const trackConversation = (req, res, next) => {
 // ✅ Chatbot query route with conversation tracking
 router.post("/", trackConversation, async (req, res) => {
     try {
+        // sessionConversations.clear(); // Clear conversations for demo purposes
+        
+        for (const [userEmail, conversations] of sessionConversations.entries()) {
+            console.log(`User: ${userEmail}, Conversations: ${conversations.length}`);
+        }
+    
         const { userEmail, query } = req.body; // Get user email & query
 
         if (!userEmail || !query) {
@@ -74,6 +81,7 @@ router.post("/end_session", async (req, res) => {
 
         // Get user's conversation history
         const conversations = sessionConversations.get(userEmail) || [];
+        // console.log(`📜 Retrieving conversation history for ${userEmail}...`);
         
         if (conversations.length === 0) {
             console.log(`⚠️ No conversation history found for ${userEmail}`);
@@ -91,10 +99,11 @@ router.post("/end_session", async (req, res) => {
         console.log(`🔄 Generating summary for ${userEmail}'s session...`);
         
         // Generate conversation summary using LLM
-        const summary = await createSummarizeChain(formattedConversation, userEmail);
+        const { summary}  = await createSummarizeChain(formattedConversation, userEmail);
+        console.log(`📝 Summary generated for in chatroute ${userEmail}: ${summary}`);
         
         // Clear the user's conversation history
-        sessionConversations.delete(userEmail);
+        // sessionConversations.delete(userEmail);
         
         console.log(`📝 Session Summary for ${userEmail}:\n${summary}`);
         

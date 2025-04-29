@@ -5,18 +5,21 @@ import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Chatbot from "./pages/Chatbot";
 import UploadPrescription from "./pages/uploadPrescription";
-
+import AdminDashboard from "./pages/AdminDashboard";
+import AdminLogin from  "./pages/AdminLogin"
 function App() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <Routes>
         {/* Public Routes */}
         <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
+        <Route path="/adminlogin" element={<AdminLogin />}/>
+        <Route path="/signup" element={<Signup />}/>
         <Route path="/upload-prescription" element={<UploadPrescription/>}></Route>
         {/* Protected Routes */}
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/adminDashboard" element={<AdminDashboard />} />
           <Route path="/chat" element={<Chatbot />} />
         </Route>
 
