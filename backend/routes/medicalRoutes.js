@@ -24,13 +24,13 @@ router.post("/upload-prescription", upload.single("prescription"), async (req, r
         // console.log(`Received Prescription: ${req.file.originalname}`);
         const result = await medicalController.uploadPrescription(req,res);
         console.log("you re in shan");
-        console.log(result.data);
+        // console.log(result.data);
 
 
         // res.status(200).json({ message: "Prescription uploaded successfully!", data: result });
 
     } catch (error) {
-        console.error("🔥 ERROR: Prescription upload failed!", error);
+        console.error("ERROR: Prescription upload failed!", error);
         // res.status(500).json({ error: "Internal Server Error. Please try again later." });
     }
 });
@@ -47,21 +47,34 @@ router.post("/save", async (req, res) => {
         if (!email || !age || !gender) {
             return res.status(400).json({ error: "Email, age, and gender are required." });
         }
+        if( age < 0){
+            return res.status(400).json({ error: "Invalid Age" });
+        }
 
         let medicalRecord = await Medical.findOne({ email });
 
         if (medicalRecord) {
-            return res.status(400).json({ error: "Medical details already exist!" });
+            // return res.status(400).json({ error: "Medical details already exist!" });
+            // Update existing record
+            medicalRecord.age = age;
+            medicalRecord.gender = gender;
+            medicalRecord.medical_conditions = medical_conditions;
+            medicalRecord.allergies = allergies;
+            medicalRecord.medications = medications;
+
+            await medicalRecord.save();
+            console.log(`Medical details updated for ${email}`);
+            return res.status(200).json({ message: "Medical details updated successfully!" });
         }
 
         medicalRecord = new Medical({ email, age, gender, medical_conditions, allergies, medications });
         await medicalRecord.save();
 
-        console.log(`✅ Medical details saved for ${email}`);
+        console.log(`Medical details saved for ${email}`);
         res.status(201).json({ message: "Medical details saved successfully!" });
 
     } catch (error) {
-        console.error("🔥 ERROR: Saving medical details failed!", error);
+        console.error("ERROR: Saving medical details failed!", error);
         res.status(500).json({ error: "Internal Server Error. Please try again later." });
     }
 });
