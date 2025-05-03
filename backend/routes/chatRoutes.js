@@ -2,10 +2,10 @@ const express = require("express");
 const router = express.Router();
 const { createSummarizeChain } = require("../controllers/summarizeChain");
 const { getMedicalResponse } = require("../controllers/ragChatbot"); // Import function
-const User = require("../models/User");
 
 // Store conversations in memory (consider using Redis or DB for production)
 const sessionConversations = new Map();
+const userQueriesMap = new Map(); // New map to store user-only queries
 
 // Middleware to track conversations
 const trackConversation = (req, res, next) => {
@@ -32,6 +32,13 @@ const trackConversation = (req, res, next) => {
                 user: query,
                 bot: data.answer
             });
+
+            if (!userQueriesMap.has(userEmail)) {
+                userQueriesMap.set(userEmail, []);
+            }
+
+            userQueriesMap.get(userEmail).push(query); 
+          
             
             console.log(`💬 Tracked conversation for ${userEmail}: Q: "${query.substring(0, 50)}..." A: "${data.answer.substring(0, 50)}..."`);
         }
@@ -82,6 +89,7 @@ router.post("/end_session", async (req, res) => {
         // Get user's conversation history
         const conversations = sessionConversations.get(userEmail) || [];
         // console.log(`📜 Retrieving conversation history for ${userEmail}...`);
+        const queriesOnly = userQueriesMap.get(userEmail) || [];
         
         if (conversations.length === 0) {
             console.log(`⚠️ No conversation history found for ${userEmail}`);
@@ -99,10 +107,12 @@ router.post("/end_session", async (req, res) => {
         console.log(`🔄 Generating summary for ${userEmail}'s session...`);
         
         // Generate conversation summary using LLM
-        const { summary}  = await createSummarizeChain(formattedConversation, userEmail);
+        const { summary}  = await createSummarizeChain(formattedConversation, userEmail, queriesOnly);
         console.log(`📝 Summary generated for in chatroute ${userEmail}: ${summary}`);
         
         // Clear the user's conversation history
+        sessionConversations.delete(userEmail);
+        userQueriesMap.delete(userEmail);
         // sessionConversations.delete(userEmail);
         
         console.log(`📝 Session Summary for ${userEmail}:\n${summary}`);

@@ -40,13 +40,13 @@ const Chatbot = () => {
 
       const data = await response.json();
       const botReply = {
-        text: data.answer || "🤖 Sorry, I couldn't understand that!",
+        text: data.answer || "Sorry, I couldn't understand that!",
         sender: "bot"
       };
       setMessages((prev) => [...prev, botReply]);
     } catch (error) {
       console.error("Error fetching response:", error);
-      setMessages((prev) => [...prev, { text: "❌ Server error! Please try again.", sender: "bot" }]);
+      setMessages((prev) => [...prev, { text: " Server error! Please try again.", sender: "bot" }]);
     }
     setLoading(false);
   };
@@ -197,14 +197,14 @@ const Chatbot = () => {
               }`}>
                 {/* <ReactMarkdown>{msg.text}</ReactMarkdown> */}
                 <ReactMarkdown
-  remarkPlugins={[remarkGfm]}
-  rehypePlugins={[rehypeRaw]}
-  components={{
-    h3: ({node, ...props}) => <h3 className="text-lg font-semibold mt-2 mb-1 text-purple-700" {...props} />,
-    ul: ({node, ...props}) => <ul className="list-disc list-inside mb-2 text-gray-800 dark:text-gray-200" {...props} />,
-    p: ({node, ...props}) => <p className="mb-2 text-sm text-gray-900 dark:text-gray-100" {...props} />,
-    blockquote: ({node, ...props}) => <blockquote className="border-l-4 pl-3 italic text-gray-600 dark:text-gray-300" {...props} />
-  }}
+                    remarkPlugins={[remarkGfm]}
+                    rehypePlugins={[rehypeRaw]}
+                    components={{
+                      h3: ({node, ...props}) => <h3 className="text-lg font-semibold mt-2 mb-1 text-purple-700" {...props} />,
+                      ul: ({node, ...props}) => <ul className="list-disc list-inside mb-2 text-gray-800 dark:text-gray-200" {...props} />,
+                      p: ({node, ...props}) => <p className="mb-2 text-sm text-gray-900 dark:text-gray-100" {...props} />,
+                      blockquote: ({node, ...props}) => <blockquote className="border-l-4 pl-3 italic text-gray-600 dark:text-gray-300" {...props} />
+                    }}
 >
   {msg.text}
 </ReactMarkdown>

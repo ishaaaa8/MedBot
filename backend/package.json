@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "@aws-sdk/client-textract": "^3.787.0",
+    "@huggingface/inference": "^2.8.1",
     "@langchain/community": "^0.3.40",
     "@langchain/core": "^0.3.40",
     "@langchain/deepseek": "^0.0.1",
