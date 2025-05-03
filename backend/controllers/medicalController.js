@@ -14,13 +14,13 @@ exports.storePrescriptionInVectorDB = async (extractedText, userEmail) => {
     const docs = await splitter.createDocuments([extractedText]);
 
     // Instantiate vector store
-    const vectorStore = await MemoryVectorStore.fromDocuments(docs, new OllamaEmbeddings(
-      {
-        model: "llama3.2:latest",
-        temperature: 1,
-        baseUrl: "http://localhost:11434",
-      }
-    ));
+    // const vectorStore = await MemoryVectorStore.fromDocuments(docs, new OllamaEmbeddings(
+    //   {
+    //     model: "llama3.2:latest",
+    //     temperature: 1,
+    //     baseUrl: "http://localhost:11434",
+    //   }
+    // ));
     console.log(`Prescription stored in vector DB for ${userEmail}`);
   } catch (error) {
     console.error("ERROR: Failed to store prescription in vector DB", error);
