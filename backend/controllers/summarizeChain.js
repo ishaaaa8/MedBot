@@ -17,7 +17,7 @@ const Admin = require("../models/Admin");
 async function createSummarizeChain(conversationHistory, userEmail, userQueries) {
     try {
         const groq = new ChatGroq({
-            apiKey: process.env.GROQ_API_KEY || "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",
+            apiKey: process.env.GROQ_API_KEY,
             model: "deepseek-r1-distill-llama-70b",
             temperature: 0.3,
         });

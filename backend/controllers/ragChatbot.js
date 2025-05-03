@@ -12,7 +12,7 @@ const { HuggingFaceInferenceEmbeddings } = require("@langchain/community/embeddi
 
 const Groq = require("groq-sdk");
 const groq = new Groq({
-    apiKey: "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", 
+    apiKey: process.env.GROQ_API_KEY,
     model: "llama-3.1-8b-instant", 
     temperature: 0.7,
 });
