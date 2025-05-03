@@ -66,7 +66,7 @@ async function createSummarizeChain(conversationHistory, userEmail, userQueries)
             // text: summary
             });
 
-            sentimentData = response.data;
+            const sentimentData = response.data;
             console.log(`Sentiment: ${sentimentData.predicted_label}`);
             console.log(`Confidence: ${sentimentData.confidence}`);
         } catch (sentimentError) {
