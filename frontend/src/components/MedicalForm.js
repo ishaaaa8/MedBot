@@ -25,7 +25,7 @@ const MedicalForm = ({ onSubmit }) => {
     try {
       const email = localStorage.getItem("userEmail");
 
-      const response = await fetch("http://localhost:5000/medical/save", {
+      const response = await fetch("https://medbot-backend.onrender.com/medical/save", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

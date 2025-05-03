@@ -32,7 +32,7 @@ const Chatbot = () => {
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:5000/api/chat", {
+      const response = await fetch("https://medbot-backend.onrender.com/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userEmail: localStorage.getItem("userEmail"), query: input }),
@@ -64,7 +64,7 @@ const Chatbot = () => {
         return;
       }
 
-      const response = await fetch("http://localhost:5000/api/chat/end_session", {
+      const response = await fetch("https://medbot-backend.onrender.com/api/chat/end_session", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userEmail }),

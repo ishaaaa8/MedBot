@@ -24,7 +24,7 @@ const AdminLogin = () => {
     
     try {
       
-      const res = await axios.post("http://localhost:5000/auth/adminlogin", {
+      const res = await axios.post("https://medbot-backend.onrender.com/auth/adminlogin", {
         email,
         password,
       });

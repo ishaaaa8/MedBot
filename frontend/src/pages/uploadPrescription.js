@@ -35,7 +35,7 @@ const UploadPrescription = () => {
     formData.append("userEmail", localStorage.getItem("userEmail"));
 
     try {
-      const response = await fetch("http://localhost:5000/medical/upload-prescription", {
+      const response = await fetch("https://medbot-backend.onrender.com/medical/upload-prescription", {
         method: "POST",
         body: formData,
       });

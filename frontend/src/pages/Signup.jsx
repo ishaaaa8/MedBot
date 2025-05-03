@@ -46,7 +46,7 @@ const Signup = () => {
     setIsLoading(true);
     
     try {
-      await axios.post("http://localhost:5000/auth/signup", {
+      await axios.post("https://medbot-backend.onrender.com/auth/signup", {
         email: formData.email,
         name: formData.name,
         password: formData.password,
