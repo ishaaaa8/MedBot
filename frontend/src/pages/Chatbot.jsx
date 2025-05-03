@@ -106,8 +106,34 @@ const Chatbot = () => {
   return (
     <div className="h-screen">
       <div className="h-full flex flex-col bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+         {/* Summary Modal - Shown when ending session */}
+      {summary && (
+        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 backdrop-blur-sm">
+          <div className="bg-white rounded-xl p-6 max-w-md w-full mx-4 shadow-2xl border border-gray-100">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="bg-purple-100 p-2 rounded-full">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-purple-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                </svg>
+              </div>
+              <h2 className="text-2xl font-bold text-purple-700">Conversation Summary</h2>
+            </div>
+            <div className="max-h-60 overflow-y-auto mb-4 text-gray-700 whitespace-pre-line bg-purple-50 p-4 rounded-lg border border-purple-100">
+              {summary}
+            </div>
+            <div className="flex items-center justify-center">
+              <div className="flex items-center gap-2 text-sm text-gray-500 bg-gray-100 px-3 py-2 rounded-full">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+                <p>Redirecting in 5 seconds...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
         
-        {/* Summary Modal */}
+        {/* Summary Modal
         {summary && (
           <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 backdrop-blur-sm">
             <div className="bg-white dark:bg-gray-800 rounded-xl p-6 max-w-md w-full mx-4 shadow-2xl border border-gray-200 dark:border-gray-700">
@@ -125,7 +151,7 @@ const Chatbot = () => {
               </div>
             </div>
           </div>
-        )}
+        )} */}
 
         {/* Chat Header */}
         <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 py-4 px-6 shadow-sm">
