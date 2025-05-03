@@ -107,7 +107,7 @@ router.post("/end_session", async (req, res) => {
         console.log(`🔄 Generating summary for ${userEmail}'s session...`);
         
         // Generate conversation summary using LLM
-        const { summary}  = await createSummarizeChain(formattedConversation, userEmail, queriesOnly);
+        const  summary  = await createSummarizeChain(formattedConversation, userEmail, queriesOnly);
         console.log(`📝 Summary generated for in chatroute ${userEmail}: ${summary}`);
         
         // Clear the user's conversation history
