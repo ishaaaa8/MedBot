@@ -45,7 +45,7 @@ const AdminLogin = () => {
 
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-indigo-50 to-white flex items-center justify-center p-4">
+    <div className="min-h-screen w-full bg-gradient-to-b from-indigo-50 to-white flex items-center justify-center p-4">
       <div className="bg-white rounded-xl shadow-xl w-full max-w-md overflow-hidden">
         <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-6 text-center">
           <div className="bg-white/20 rounded-full h-16 w-16 flex items-center justify-center mx-auto mb-3">
