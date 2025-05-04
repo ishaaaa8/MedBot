@@ -14,6 +14,28 @@ const Chatbot = () => {
   const [showEndPrompt, setShowEndPrompt] = useState(false);
   const chatRef = useRef(null);
 
+  function formatLLMResponse(raw) {
+    const thinkStart = raw.indexOf("<think>");
+    const thinkEnd = raw.indexOf("</think>");
+  
+    if (thinkStart !== -1 && thinkEnd !== -1 && thinkEnd > thinkStart) {
+      const thinking = raw.slice(thinkStart + 7, thinkEnd).trim();
+      const response = raw.slice(thinkEnd + 8).trim();
+  
+      return {
+        response,
+        think: thinking,
+      };
+    }
+  
+    // If no <think> tags, show raw
+    return {
+      response: raw.trim(),
+      think: null,
+    };
+  }
+  
+
   useEffect(() => {
     chatRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
@@ -111,10 +133,11 @@ const Chatbot = () => {
   return (
     <div className="h-screen">
       <div className="flex flex-col h-full bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+      
 
         {/* Summary Modal */}
         {summary && (
-          <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 backdrop-blur-sm">
+          <div className="w-full fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 backdrop-blur-sm">
             <div className="bg-white rounded-xl p-6 max-w-md w-full mx-4 shadow-2xl border border-gray-100">
               <h2 className="text-2xl font-bold text-purple-700 mb-4">Conversation Summary</h2>
               <div className="max-h-60 overflow-y-auto mb-4 text-gray-700 whitespace-pre-line bg-purple-50 p-4 rounded-lg border border-purple-100">
@@ -165,15 +188,47 @@ const Chatbot = () => {
 
         {/* Chat Messages */}
         <div className="flex-1 overflow-y-auto px-4 py-6 max-w-full lg:max-w-screen-md mx-auto space-y-4">
-          {messages.map((msg, index) => (
+          {/* {messages.map((msg, index) => (
             <div key={index} className={`max-w-fit max-w-[80%] px-4 py-2 rounded-lg shadow ${msg.sender === 'user' ? 'bg-indigo-500 text-white text-right ml-auto' : 'bg-gray-200 dark:bg-gray-700 text-white text-left mr-auto'}`}>
               <div className="prose dark:prose-invert max-w-full break-words">
+                //how to see the msg coming here
                 <ReactMarkdown rehypePlugins={[rehypeRaw]} remarkPlugins={[remarkGfm]}>
                   {msg.text}
                 </ReactMarkdown>
               </div>
             </div>
-          ))}
+          ))} */}
+          {messages.map((msg, index) => {
+  const isUser = msg.sender === 'user';
+  const { response, think } = formatLLMResponse(msg.text);
+
+  return (
+    <div
+      key={index}
+      className={`max-w-fit max-w-[85%] px-4 py-2 rounded-lg shadow break-words
+        ${isUser
+          ? 'bg-indigo-500 text-white text-right ml-auto'
+          : 'bg-gray-200 text-gray-900 dark:bg-gray-700 dark:text-white text-left mr-auto'
+        }`}
+    >
+      <div className="prose dark:prose-invert max-w-full">
+        <ReactMarkdown rehypePlugins={[rehypeRaw]} remarkPlugins={[remarkGfm]}>
+          {response}
+        </ReactMarkdown>
+       
+
+        {/* Optional: display the <think> section in a faint style */}
+        {think && (
+          <div className="mt-2 text-sm italic opacity-90">
+            <ReactMarkdown rehypePlugins={[rehypeRaw]} remarkPlugins={[remarkGfm]}>
+              {think}
+            </ReactMarkdown>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+})}
           <div ref={chatRef}></div>
         </div>
 
