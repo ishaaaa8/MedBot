@@ -5,29 +5,47 @@ const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const medicalRoutes = require("./routes/medicalRoutes");
 const chatRoutes = require("./routes/chatRoutes");
+const adminRoutes = require("./routes/adminRoutes");
 
+// Load environment variables from .env
 dotenv.config();
+
+// Create Express app
 const app = express();
 
 // Connect to MongoDB
 connectDB();
 
-// Configure CORS to accept only from your frontend domain
+// Allowed frontend origins
+const allowedOrigins = [
+  "https://medbot-frontend.onrender.com",
+  "https://medbot-ai-5wnt.onrender.com"
+];
+
+// Configure CORS
 const corsOptions = {
-  origin: "https://medbot-frontend.onrender.com",
-  credentials: true, // if you're sending cookies or auth headers
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl)
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
 };
 app.use(cors(corsOptions));
 
-// Parse incoming JSON requests
+// Middleware to parse incoming JSON requests
 app.use(express.json());
 
 // Routes
 app.use("/auth", authRoutes);
 app.use("/medical", medicalRoutes);
 app.use("/api/chat", chatRoutes);
-app.use("/api/admin", require("./routes/adminRoutes"));
+app.use("/api/admin", adminRoutes);
 
+// Start the server
 const PORT = process.env.PORT || 5050;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
 

@@ -6,7 +6,7 @@ const AdminDashboard = () => {
 
     useEffect(() => {
         // Fetch distressed users from the backend
-        axios.get('http://localhost:5000/api/admin/distress-users')
+        axios.get('https://medbot-backend.onrender.com/api/admin/distress-users')
             .then(response => {
                 setDistressUsers(response.data);
             })
