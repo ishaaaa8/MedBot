@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const AdminDashboard = () => {
+    const navigate = useNavigate();
     const [distressUsers, setDistressUsers] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -19,7 +21,11 @@ const AdminDashboard = () => {
 
     const handleLogout = () => {
         // Add logout logic here (e.g., clearing tokens, redirecting)
+        localStorage.removeItem("userEmail");
+        localStorage.removeItem("token");
+        
         alert("Logged out");
+        navigate("/login");
     };
 
     return (
