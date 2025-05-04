@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const AdminDashboard = () => {
+    const [showModal, setShowModal] = useState(false);
+
     const navigate = useNavigate();
     const [distressUsers, setDistressUsers] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -74,13 +76,37 @@ const AdminDashboard = () => {
                                     <div className="w-16 h-16 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 text-2xl font-bold shadow-inner mb-4">
                                         {user.username?.charAt(0).toUpperCase()}
                                     </div>
-                                    <h4 className="text-lg font-semibold text-gray-800">{user.username}</h4>
+                                    <h4 className="text-lg font-semibold text-gray-800">{user.name}</h4>
                                     <p className="text-sm text-gray-600 mt-1 mb-4">📧 {user.email}</p>
-                                    <button className="bg-purple-600 hover:bg-purple-700 text-white w-full py-2.5 px-6 rounded-lg shadow transition-all duration-300 flex items-center justify-center">
+                                    {/* <button className="bg-purple-600 hover:bg-purple-700 text-white w-full py-2.5 px-6 rounded-lg shadow transition-all duration-300 flex items-center justify-center">
                                         <span>View Details</span>
                                         <span className="ml-2">→</span>
-                                    </button>
+                                    </button> 
+                                    */}
+                                    <button
+                    onClick={() => setShowModal(true)}
+                    className="bg-purple-600 hover:bg-purple-700 text-white w-full py-2.5 px-6 rounded-lg shadow transition-all duration-300 flex items-center justify-center"
+                >
+                    <span>View Details</span>
+                    <span className="ml-2">→</span>
+                </button>
                                 </div>
+                                {showModal && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50">
+                    <div className="bg-white  h-fir rounded-xl shadow-xl p-6 w-fit">
+                        <h2 className="text-xl font-bold text-gray-800 mb-4">User Details</h2>
+                        <p><strong>Username:</strong> {user.name}</p>
+                        <p><strong>Email:</strong> {user.email}</p>
+                        <p><strong>Summary:</strong> {user.conversationHistory.at(-1).summary}</p>
+                        <button
+                            onClick={() => setShowModal(false)}
+                            className="mt-6 bg-gray-800 hover:bg-gray-900 text-white py-2 px-4 rounded w-full"
+                        >
+                            Close
+                        </button>
+                    </div>
+                </div>
+            )}
                             </div>
                         ))}
                     </div>
