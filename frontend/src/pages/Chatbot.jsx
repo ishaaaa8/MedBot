@@ -105,7 +105,7 @@ const Chatbot = () => {
 
   return (
     <div className="h-screen">
-      <div className="h-full flex flex-col bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+      <div className="h-full w-full flex flex-col bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
          {/* Summary Modal - Shown when ending session */}
       {summary && (
         <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 backdrop-blur-sm">
