@@ -100,10 +100,6 @@ MedBot undergoes rigorous testing including:
 - **White Box Testing**: Unit tests and integration tests
 - **API Testing**: Comprehensive endpoint validation
 
-## 👥 Contributors
-
-- Shantanu Rai ([@shantanu](https://github.com/SHANTANU-RAI))
-- Isha Singh ([@isha](https://github.com/ishaaaa8))
 
 
 ## 🔮 Future Enhancements
