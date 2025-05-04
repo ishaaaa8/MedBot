@@ -53,10 +53,10 @@ async function createSummarizeChain(conversationHistory, userEmail, userQueries)
         console.log(`Summary generated.`);
 
         // Default sentiment in case analysis fails
-        // let sentimentData = {
-        //     predicted_label: "neutral",
-        //     confidence: 0
-        // };
+        let sentimentData = {
+            predicted_label: "neutral",
+            confidence: 0
+        };
 
         // Analyze sentiment
         // console.log(`CONVERSATION HISTORY . USER ${conversationHistory.user} `)
@@ -66,7 +66,7 @@ async function createSummarizeChain(conversationHistory, userEmail, userQueries)
             // text: summary
             });
 
-            const sentimentData = response.data;
+            sentimentData = response.data;
             console.log(`Sentiment: ${sentimentData.predicted_label}`);
             console.log(`Confidence: ${sentimentData.confidence}`);
         } catch (sentimentError) {
@@ -77,6 +77,7 @@ async function createSummarizeChain(conversationHistory, userEmail, userQueries)
         try {
             // Find the user by email
             // Add the new summary and sentiment first
+            console.log("User Email: ", userEmail);
             const user = await User.findOne({ email: userEmail });
             if (user) {
                 // Add the new summary and sentiment first
