@@ -10,6 +10,14 @@ import AdminLogin from  "./pages/AdminLogin"
 function App() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      {/* <div
+  className={`min-h-screen flex flex-col transition-all duration-300 bg-cover bg-center ${
+    darkMode
+      ? "bg-[url('/public/medical-dark.jpg')]"
+      : "bg-[url('/public/medical-dark.jpg')]"
+  }`} */}
+{/* > */}
+
       <Routes>
         {/* Public Routes */}
         <Route path="/login" element={<Login />} />
