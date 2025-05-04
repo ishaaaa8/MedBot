@@ -19,6 +19,7 @@ connectDB();
 // Allowed frontend origins
 const allowedOrigins = [
   "https://medbot-frontend.onrender.com",
+
   "https://medbot-ai-5wnt.onrender.com","http://localhost:3000",
 ];
 

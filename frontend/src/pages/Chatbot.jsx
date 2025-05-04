@@ -110,6 +110,7 @@ const Chatbot = () => {
 
   return (
     <div className="h-screen">
+
       <div className="flex flex-col h-full bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
 
         {/* Summary Modal */}
@@ -119,6 +120,7 @@ const Chatbot = () => {
               <h2 className="text-2xl font-bold text-purple-700 mb-4">Conversation Summary</h2>
               <div className="max-h-60 overflow-y-auto mb-4 text-gray-700 whitespace-pre-line bg-purple-50 p-4 rounded-lg border border-purple-100">
                 {summary}
+
               </div>
               <div className="flex items-center justify-center text-sm text-gray-500 bg-gray-100 px-3 py-2 rounded-full">
                 <svg className="h-4 w-4 animate-spin mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
