@@ -30,8 +30,8 @@ const AdminLogin = () => {
       });
       console.log(res)
       
-    //   localStorage.setItem("token", res.data.token);
-    //   localStorage.setItem("userEmail", email);
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("userEmail", email);
       navigate("/adminDashboard");
       
       
