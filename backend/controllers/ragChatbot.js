@@ -8,7 +8,9 @@ const Medical = require("../models/MedicalForm");
 const fs = require("fs");
 const path = require("path");
 
-const { HuggingFaceInferenceEmbeddings } = require("@langchain/community/embeddings/hf");
+// const { HuggingFaceInferenceEmbeddings } = require("@langchain/community/embeddings/hf")
+// ;
+const { HuggingFaceInferenceEmbeddings } = require("@huggingface/inference");
 
 const Groq = require("groq-sdk");
 const groq = new Groq({
