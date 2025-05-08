@@ -25,7 +25,7 @@ const groq = new Groq({
 
 const embeddings = new HuggingFaceInferenceEmbeddings({
     apiKey: process.env.HF_TOKEN, // safer than hardcoding
-    model: "sentence-transformers/all-MiniLM-L6-v2" // or any compatible model
+    model: "sentence-transformers/all-MiniLM-L12-v2" // or any compatible model
   });
 
 
