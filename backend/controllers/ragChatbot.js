@@ -8,60 +8,42 @@ const Medical = require("../models/MedicalForm");
 const fs = require("fs");
 const path = require("path");
 
-// const { HuggingFaceInferenceEmbeddings } = require("@langchain/community/embeddings/hf")
-;
+
+// const { HuggingFaceInferenceEmbeddings } = require("@langchain/community/embeddings/hf_transformers");
 // const { HuggingFaceInferenceEmbeddings } = require("@huggingface/inference");
 
+// const embeddings = new HuggingFaceInferenceEmbeddings({
+//     apiKey: process.env.HF_TOKEN, // safer than hardcoding
+//     model: "sentence-transformers/all-MiniLM-L6-v2" // or any compatible model
+//   });
 
-// const { Embeddings } = require("langchain/embeddings/base");
+const axios = require("axios");
+const { Embeddings } = require("@langchain/core/embeddings");
 
+class CustomNgrokEmbeddings extends Embeddings {
+    constructor({ apiUrl }) {
+        super();
+        this.apiUrl = apiUrl;
+    }
 
-class ManualHFEmbeddings{
-	constructor(apiKey, model) {
-		// super();
-		this.apiKey = apiKey;
-		this.model = model;
-		this.apiUrl = `https://api-inference.huggingface.co/pipeline/feature-extraction/${model}`;
-	}
+    async embedDocuments(texts) {
+        const embeddings = await Promise.all(texts.map(text => this.embedQuery(text)));
+        return embeddings;
+    }
 
-	async embedQuery(text) {
-		return await this._fetchEmbedding(text);
-	}
-
-	async embedDocuments(texts) {
-		return Promise.all(texts.map(t => this._fetchEmbedding(t)));
-	}
-
-	
-    async _fetchEmbedding(text) {
-        const response = await fetch(this.apiUrl, {
-            method: "POST",
-            headers: {
-                Authorization: `Bearer ${this.apiKey}`,
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ inputs: text }), // ✅ FIXED
-        });
-    
-        if (!response.ok) {
-            throw new Error(`Hugging Face fetch failed: ${response.statusText}`);
-        }
-    
-        const result = await response.json();
-    
-        // Some models return a list of vectors per token; flatten if needed
-        if (Array.isArray(result) && Array.isArray(result[0])) {
-            return result[0];
-        } else {
-            throw new Error("Unexpected response format from Hugging Face.");
+    async embedQuery(text) {
+        try {
+            const response = await axios.post(this.apiUrl, { text });
+            return response.data; // array of floats
+        } catch (error) {
+            console.error("Embedding API error:", error.message);
+            throw new Error("Failed to fetch embedding from custom API");
         }
     }
-    
 }
-const embeddings = new ManualHFEmbeddings(
-	process.env.HF_TOKEN,
-	"sentence-transformers/all-MiniLM-L12-v2"
-);
+const embeddings = new CustomNgrokEmbeddings({
+    apiUrl: "https://9f12-2401-4900-a06d-3d6d-753a-c096-6c00-d25b.ngrok-free.app/embed"
+});
 
 
 const Groq = require("groq-sdk");
@@ -77,10 +59,6 @@ const groq = new Groq({
 //     baseUrl: "http://localhost:11434",
 // });
 
-// const embeddings = new HuggingFaceInferenceEmbeddings({
-//     apiKey: process.env.HF_TOKEN, // safer than hardcoding
-//     model: "sentence-transformers/all-MiniLM-L12-v2" // or any compatible model
-//   });
 
 
 async function fetchMedicalData(userEmail) {
