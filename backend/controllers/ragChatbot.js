@@ -13,11 +13,12 @@ const path = require("path");
 // const { HuggingFaceInferenceEmbeddings } = require("@huggingface/inference");
 
 
-const { Embeddings } = require("langchain/embeddings/base");
+// const { Embeddings } = require("langchain/embeddings/base");
+
 
 class ManualHFEmbeddings{
 	constructor(apiKey, model) {
-		super();
+		// super();
 		this.apiKey = apiKey;
 		this.model = model;
 		this.apiUrl = `https://api-inference.huggingface.co/pipeline/feature-extraction/${model}`;
