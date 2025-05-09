@@ -32,7 +32,7 @@ class CustomNgrokEmbeddings extends Embeddings {
     }
 }
 const embeddings = new CustomNgrokEmbeddings({
-    apiUrl: "https://9f12-2401-4900-a06d-3d6d-753a-c096-6c00-d25b.ngrok-free.app/embed"
+    apiUrl: process.env.NGROK_API,
 });
 
 
