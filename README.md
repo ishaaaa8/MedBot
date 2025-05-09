@@ -15,6 +15,8 @@ The project addresses key healthcare challenges including prescription interpret
 - **Secure Local Deployment**: Ensure privacy with locally deployed language models (DeepSeek-1.1B)
 - **Personalized Healthcare Knowledge**: Access personalized recommendations based on your medical history
 
+## DEMO
+- https://drive.google.com/file/d/15yzUAEwq_mVrraSfHw6K0kKMH1xnwT8N/view?usp=drive_link
 ## 🚀 Technologies
 
 ### Frontend
