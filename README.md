@@ -3,13 +3,14 @@
 
 ## 📋 Overview
 
-MedBot is an advanced AI-powered healthcare assistant designed to transform how patients access and interact with medical assistance. Leveraging cutting-edge technologies including Optical Character Recognition (OCR), Named Entity Recognition (NER), and Retrieval-Augmented Generation (RAG), MedBot provides personalized, context-aware medical information tailored to individual users.
+
+MedBot is an advanced AI-powered healthcare assistant designed to transform how patients access and interact with medical assistance. Leveraging cutting-edge technologies including Retrieval-Augmented Generation (RAG), Langchain.js, AWS Textract to provide personalized, context-aware medical response tailored to individual users.
 
 The project addresses key healthcare challenges including prescription interpretation difficulties, limited access to healthcare professionals, information overload, and gaps in mental health monitoring.
 
 ## ✨ Features
-
-- **Prescription Parsing**: Upload and interpret handwritten prescriptions using AWS Textract and custom NER models
+- **User Interface**: Interative User Interface using React.js and TailwindCSS
+- **Prescription Parsing**: Upload and interpret handwritten prescriptions using AWS Textract.
 - **Contextual Medical Chatbot**: Get personalized medical information through a RAG-based architecture
 - **Mental Health Monitoring**: Benefit from sentiment analysis to detect potential mental health concerns
 - **Secure Local Deployment**: Ensure privacy with locally deployed language models (DeepSeek-1.1B)
@@ -32,8 +33,7 @@ The project addresses key healthcare challenges including prescription interpret
 ### AI/ML Components
 - DeepSeek-1.1B (Local LLM)
 - AWS Textract (OCR)
-- SymSpell (Medical term correction)
-- Sentence Transformers (Vector embeddings)
+- Lamma Vector embeddings
 - LangChain (LLM workflow orchestration)
 - Ollama (Local model deployment)
 
