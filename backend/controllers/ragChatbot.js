@@ -8,9 +8,60 @@ const Medical = require("../models/MedicalForm");
 const fs = require("fs");
 const path = require("path");
 
-const { HuggingFaceInferenceEmbeddings } = require("@langchain/community/embeddings/hf")
+// const { HuggingFaceInferenceEmbeddings } = require("@langchain/community/embeddings/hf")
 ;
 // const { HuggingFaceInferenceEmbeddings } = require("@huggingface/inference");
+
+
+const { Embeddings } = require("langchain/embeddings/base");
+
+class ManualHFEmbeddings extends Embeddings {
+	constructor(apiKey, model) {
+		super();
+		this.apiKey = apiKey;
+		this.model = model;
+		this.apiUrl = `https://api-inference.huggingface.co/pipeline/feature-extraction/${model}`;
+	}
+
+	async embedQuery(text) {
+		return await this._fetchEmbedding(text);
+	}
+
+	async embedDocuments(texts) {
+		return Promise.all(texts.map(t => this._fetchEmbedding(t)));
+	}
+
+	
+    async _fetchEmbedding(text) {
+        const response = await fetch(this.apiUrl, {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${this.apiKey}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ inputs: text }), // ✅ FIXED
+        });
+    
+        if (!response.ok) {
+            throw new Error(`Hugging Face fetch failed: ${response.statusText}`);
+        }
+    
+        const result = await response.json();
+    
+        // Some models return a list of vectors per token; flatten if needed
+        if (Array.isArray(result) && Array.isArray(result[0])) {
+            return result[0];
+        } else {
+            throw new Error("Unexpected response format from Hugging Face.");
+        }
+    }
+    
+}
+const embeddings = new ManualHFEmbeddings(
+	process.env.HF_TOKEN,
+	"sentence-transformers/all-MiniLM-L12-v2"
+);
+
 
 const Groq = require("groq-sdk");
 const groq = new Groq({
@@ -25,10 +76,10 @@ const groq = new Groq({
 //     baseUrl: "http://localhost:11434",
 // });
 
-const embeddings = new HuggingFaceInferenceEmbeddings({
-    apiKey: process.env.HF_TOKEN, // safer than hardcoding
-    model: "sentence-transformers/all-MiniLM-L12-v2" // or any compatible model
-  });
+// const embeddings = new HuggingFaceInferenceEmbeddings({
+//     apiKey: process.env.HF_TOKEN, // safer than hardcoding
+//     model: "sentence-transformers/all-MiniLM-L12-v2" // or any compatible model
+//   });
 
 
 async function fetchMedicalData(userEmail) {
