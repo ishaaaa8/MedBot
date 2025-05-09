@@ -12,7 +12,7 @@ const upload = multer({ dest: "uploads/" });
 
 
 // Upload prescription route
-// ✅ Upload Prescription Route
+// Upload Prescription Route
 router.post("/upload-prescription", upload.single("prescription"), async (req, res) => {
     try {
         if (!req.file) {
@@ -96,7 +96,7 @@ router.get("/:email", async (req, res) => {
         res.status(200).json(medicalRecord);
 
     } catch (error) {
-        console.error("🔥 ERROR: Fetching medical details failed!", error);
+        console.error("ERROR: Fetching medical details failed!", error);
         res.status(500).json({ error: "Internal Server Error. Please try again later." });
     }
 });
