@@ -13,7 +13,7 @@ const path = require("path");
 // const { HuggingFaceInferenceEmbeddings } = require("@huggingface/inference");
 
 
-const { Embeddings } = require("langchain/embeddings/base");
+// const { Embeddings } = require("langchain/embeddings/base");
 
 class ManualHFEmbeddings extends Embeddings {
 	constructor(apiKey, model) {
